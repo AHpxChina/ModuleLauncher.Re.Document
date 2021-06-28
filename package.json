@@ -1,0 +1,15 @@
+{
+  "name": "ModuleLauncher.Re.Document",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/AHpxChina/ModuleLauncher.Re.Document.git",
+  "author": "AHpx <AHpx@yandex.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  },
+  "scripts": {
+    "dev": "vuepress dev docs --temp .temp",
+    "build": "vuepress build docs"
+  }
+}
