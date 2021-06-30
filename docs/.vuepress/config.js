@@ -4,19 +4,33 @@ module.exports = {
   base: '/ModuleLauncher.Re.Document/',
   locales: {
     '/': {
-      lang: 'en-US',
-      title: 'VuePress',
-      description: 'Vue-powered Static Site Generator',
-    },
-    '/zh/': {
       lang: 'zh-CN',
-      title: 'VuePress',
-      description: 'Vue 驱动的静态网站生成器',
+      title: 'ModuleLauncher.Re - 文档',
+      description: 'ModuleLauncher.Re的文档页面',
+    },
+    '/en/': {
+      lang: 'en-US',
+      title: 'ModuleLauncher.Re - Docuemention',
+      description: 'Documention site of ModuleLauncher.Re library',
     },
   },
   themeConfig: {
+    sidebar: 'auto',
     locales: {
       '/': {
+        selectText: 'Languages',
+        label: '简体中文',
+        editLinkText: '在 GitHub 上编辑此页',
+        serviceWorker: {
+          updatePopup: {
+            message: '发现新内容可用.',
+            buttonText: '刷新',
+          },
+        },
+        algolia: {},
+        nav: [{ text: '项目结构', link: '/structure/' }],
+      },
+      '/en/': {
         selectText: 'Languages',
         label: 'English',
         ariaLabel: 'Languages',
@@ -28,41 +42,7 @@ module.exports = {
           },
         },
         algolia: {},
-        nav: [{ text: 'Nested', link: '/nested/', ariaLabel: 'Nested' }],
-        sidebar: {
-          '/': [
-            /* ... */
-          ],
-          '/nested/': [
-            /* ... */
-          ],
-        },
-      },
-      '/zh/': {
-        // 多语言下拉菜单的标题
-        selectText: '选择语言',
-        // 该语言在下拉菜单中的标签
-        label: '简体中文',
-        // 编辑链接文字
-        editLinkText: '在 GitHub 上编辑此页',
-        // Service Worker 的配置
-        serviceWorker: {
-          updatePopup: {
-            message: '发现新内容可用.',
-            buttonText: '刷新',
-          },
-        },
-        // 当前 locale 的 algolia docsearch 选项
-        algolia: {},
-        nav: [{ text: '嵌套', link: '/zh/nested/' }],
-        sidebar: {
-          '/zh/': [
-            /* ... */
-          ],
-          '/zh/nested/': [
-            /* ... */
-          ],
-        },
+        nav: [{ text: 'Structure', link: '/zh/structure/', ariaLabel: 'Structure' }],
       },
     },
   },
