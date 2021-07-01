@@ -2,6 +2,9 @@ module.exports = {
   title: 'Hello VuePress',
   description: 'Just playing around',
   base: '/ModuleLauncher.Re.Document/',
+  markdown: {
+    lineNumbers: true
+  },
   locales: {
     '/': {
       lang: 'zh-CN',
@@ -28,7 +31,10 @@ module.exports = {
           },
         },
         algolia: {},
-        nav: [{ text: '项目结构', link: '/structure/' }],
+        nav: [
+          { text: '项目结构', link: '/structure/' },
+          { text: '启动', link: '/launch/' }
+      ],
       },
       '/en/': {
         selectText: 'Languages',
