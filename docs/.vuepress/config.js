@@ -33,7 +33,8 @@ module.exports = {
         algolia: {},
         nav: [
           { text: '项目结构', link: '/structure/' },
-          { text: '启动', link: '/launch/' }
+          { text: '启动', link: '/launch/' },
+          { text: '下载', link: '/downloader/' }
       ],
       },
       '/en/': {
