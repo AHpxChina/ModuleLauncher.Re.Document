@@ -9,11 +9,6 @@
 + ModuleLauncher.Re.Test
   + `ModuleLauncher.Re.Test`是用于方便测试本库各项功能是否正常运转的项目，一般来说不用去在意它。
 
-## ModuleLauncher.Re
-
-ModuleLauncher.Re的这个项目的结构是这样的：
-~~细心地你会发现尽管它们是按照首字母排序的但同时也保持了单词长度排序~~
-
 - [项目结构](#项目结构)
   - [ModuleLauncher.Re](#modulelauncherre)
     - [Authenticators](#authenticators)
@@ -22,57 +17,113 @@ ModuleLauncher.Re的这个项目的结构是这样的：
     - [Locators](#locators)
     - [Models](#models)
     - [Utils](#utils)
+  - [ModuleLauncher.Re.Example](#modulelauncherreexample)
+    - [Assets](#assets)
+    - [Extensions](#extensions)
+    - [ViewModels](#viewmodels)
+    - [Views](#views)
+  - [ModuleLaucher.Test](#modulelauchertest)
+
+## ModuleLauncher.Re
+
+主项目，基于[.Net Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)编写。
 
 ### Authenticators
-::: tip
-所有`AuthenticatorBase`的子类的`Authenticate`方法都会返回一个[AuthenticateResult](#models)对象。
-:::
 
-  + `AuthenticatorBase`，抽象类，是所有*验证器*类型的基类。
-  + `MicrosoftAuthenticator`，微软验证器，只实现了继承自`AuthenticatorBase`的`Authenticate`方法。
-    + `Code`，属性，从[微软登录网页](https://wiki.vg/ZH:Microsoft_Authentication_Scheme)获取的`code`url参数。
-    + `CheckMinecraftOwnership`，方法，检查对应传入的`AccessToken`的用户是否拥有Minecraft。
-  + `MojangAuthenticator`，Mojang账户验证器，完整的继承了`AuthenticatorBase`定义的抽象成员。
-    + `Account`，属性，用以验证的账号。
-    + `Password`，属性，用以验证的账号的密码。
-    + `ClientToken`，属性，客户端标识符。
-    + `Authenticate`，方法，执行验证。
-    + `Refresh`，方法，根据传入的*accessToken*和*clientToken*刷新*accessToken*。
-    + `Validate`，方法，验证传入的*accessToken*和*clientToken*是否有效。
-    + `SignOut`，方法，登出当前登录的账号（以账号和密码使目前的*accessToken*失效）。
-    + `Invalidate`，方法，注销当前有效的*accssToken*。
-  + `OfflineAuthenticator`，仅实现了`AuthenticatorBase`的`Authenticate`方法。
+验证器。
+
++ `AuthenticatorBase`，抽象类，是所有*验证器*类型的基类。
++ `MicrosoftAuthenticator`，微软验证器。
++ `OfflineAuthenticator`，离线验证器。
++ `MojangAuthenticator`，Mojang验证器。
 
 ### Downloaders
 
+下载器。
+
 + `DownloaderBase`，抽象类，是所有*下载器*的基类。
-  + `DownloadStarted`，属性，是一个`Action<DownloadStartedEventArgs>`类型的委托，代表下载开始了。
-  + `DownloadCompleted`，属性，是一个`Action<AsyncCompletedEventArgs>`类型的委托，代表下载结束了（不管是成功还是失败）。
-  + `DownloadProgressChanged`，属性，是一个`Action<DownloadProgressChangedEventArgs>`类型的委托，代码下载进度改变了。
 + `MinecraftDownloader`，*Minecraft下载器*。
-  + `Source`，属性，下载源。
-    + Mojang，官方下载源（此处的命名有些不严谨）。
-    + [Bmclapi](https://bmclapidoc.bangbang93.com)，国内源，bmclapi下载源。
-    + Mcbss，国内源，mcbbs下载源。
-  + `GetLatestVersions`，方法，返回一个*元组*，第一个项目是*最新发布版*，第二个项目是*最新快照版*。
-  + `GetRemoteMinecrafts`，获取所有的*Minecraft版本*。
-  + `GetRemoteMinecraft`，获取指定的*Minecraft版本*。
-  + `Download`，方法，下载Minecraft。
++ `DependenciesDownloader`，*依赖下载器*（Libraries和Assets）。
 
 ### Launcher
 
+启动器。
+
++ `Launcher`，启动器类。
+
 ### Locators
+
+定位器。
+
++ `LocalityLocator`，Minecraft本地文件定位器，尽管其方法是公开的，但不推荐使用。
++ `MinecraftLocator`，Minecraft定位器，获取一个Minecraft对象。
++ `AssetsLocator`，Assets定位器。
++ `LibrariesLocator`，Libraries定位器。
 
 ### Models
 
- + AuthenticateResult，账号信息
-   + `Name`，当前账号的角色名称。
-   + `ClientToken`，当前账号的客户端标识符
-   + `AccessToken`，当前账号的访问令牌
-   + `Uuid `，当前账号的UUID，
-   + 隐式转换：构造一个`Name`为传入字符串且其他属性随机生成的`AuthenticateResult`对象
- + MinecraftDownloadItem，获取到的*远程Minecraft对象*。
-   + `Id`，*Minecraft ID*。
-   + `Url`，Minecraft Json的url
+数据模型。
+
+ + `AuthenticateResult`，账号信息。
+ + `MinecraftDownloadItem`，获取到的*远程Minecraft对象*。
+ + `MinecraftDownloadType`，远程Minecraft的类型，比如release，snapshot和old_alpha/beta。
+ + `DownloaderSource`，下载源，包括Mojang（不严谨的说法，实际上是官方下载源），Bmclapi和Mcbbs。
+ + `Minecraft`，Minecraft对象，包括本地文件描述和json实体。
+ + `MinecraftJson`，Minecraft json实体类。
+ + `LocalVersion`，本地版本信息描述。
+ + `Dependency`，依赖，描述一个Library或Asset。
+ + `DependencySystem`，依赖所适用的操作系统类型。
 
 ### Utils
+
+此命名空间下的大部分类和方法都仅供ModuleLauncher.Re内部使用，仅公开一个`ToJsonString`方法以便调试。
+
+## ModuleLauncher.Re.Example
+
+示例项目，基于[.Net Core 3.1](https://dotnet.microsoft.com/download/dotnet/3.1)和Avalonia 0.10.6（一种类似于WPFd的XAML框架）编写。如果想要搞懂UI的实现方案，请事先了解[Avalonia](https://avaloniaui.net/)和MVVM模式([Rective UI](https://www.reactiveui.net/))
+
+### Assets
+
+资源文件，图标、图片之类的。
+
+### Extensions
+
+拓展工具。
+
++ `GlobalUtiliti`，全局工具类。
++ `MessageBoxEx`，信息框类，弥补了Avalonia没有信息框的问题。
+
+### ViewModels
+
+**视图模型**，所有例子的程序逻辑都在这里。
+
++ `MicrosoftAuthenticatorViewModel`，微软验证示例视图模型。
++ `MojangAuthenticatorViewModel`，Mojang验证示例视图模型。
++ `OfflineAuthenticatorViewModel`，离线验证器示例视图模型。
++ `DownloadersViewModel`，下载器示例视图模型。
++ `LibrariesDownloaderItemViewModel`，Libraries下载器项目视图模型，没有程序逻辑。
++ `LauncherViewModel`，启动器示例视图模型。
++ `MinecraftLocatorViewModel`，定位器示例视图模型，包含了`AssetsLocator`和`LibrariesLocator`的示例。
++ `MainWindowViewModel`，主窗口视图模型，没有内容。
++ `ViewModelBase`，视图模型基类，没有内容，只是继承了`ReactiveObject`。 
+
+### Views
+
+视图，是要呈现的UI实现代码。
+
++ `MainWindow`，主窗口视图。
++ `AuthenticatorsView`，验证器视图。
+  + `MicrosoftAuthenticatorView`，微软验证器视图。
+  + `MicrosoftAuthenticatorWebBrowser`，微软验证器的网页浏览器视图。
+  + `MojangAuthenticatorView`，Mojang验证器视图。
+  + `OfflineAuthenticatorView`，离线验证器视图。
++ `LocatorsView`，定位器视图。
+  + `MinecraftLocatorView`，Minecraft定位器视图。
++ `LauncherView`，启动器视图。
++ `DownloadersView`，下载器视图。
+
+## ModuleLaucher.Test
+
++ 这个项目没啥好讲的。
++ 这个项目没啥好讲的。
++ 这个项目没啥好讲的。
